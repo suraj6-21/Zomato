@@ -1,8 +1,10 @@
 const userModel = require("../models/user.models.js")
+const foodpartnerModel = require("../models/foodPartner.model.js")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 
 
+// Register new User
 async function registerUser(req, res) {
 
     const { fullname, email, password } = req.body
@@ -15,8 +17,6 @@ async function registerUser(req, res) {
     }
 
     const hashPassword = await bcrypt.hash(password, 10)
-    console.log(hashPassword);
-
     const user = await userModel.create({
         fullname,
         email,
@@ -30,7 +30,7 @@ async function registerUser(req, res) {
     res.cookie("token", token, {
         httpOnly: true,
         sameSite: "strict",     // protects against CSRF attacks
-        maxAge: 7 * 24 * 60 * 60 * 1000 // cookie expires in 7 days
+        maxAge: 1 * 24 * 60 * 60 * 1000 // cookie expires in 7 days
     })
     res.status(201).json({
         success: true,
@@ -43,6 +43,7 @@ async function registerUser(req, res) {
     })
 }
 
+// Login User
 async function loginUser(req, res) {
     try {
         const { email, password } = req.body;
@@ -92,9 +93,163 @@ async function loginUser(req, res) {
     }
 }
 
+// Logout User
+function logoutUser(req, res) {
+    res.clearCookie("token", {
+        httpOnly: true,
+        sameSite: "strict",
+    });
 
-async function logoutUser(req, res) {
-
+    return res.status(200).json({ message: "Logout successful" });
 }
 
-module.exports = { registerUser, loginUser, logoutUser }
+// Register new food partner
+async function registeredFoodPartner(req, res) {
+    try {
+        const { name, email, password } = req.body;
+
+        // 1️⃣ Validate input
+        if (!name || !email || !password) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
+
+        // 2️⃣ Check if account already exists
+        const existingPartner = await foodpartnerModel.findOne({ email });
+        if (existingPartner) {
+            return res.status(400).json({ message: "Account already exists" });
+        }
+
+        // 3️⃣ Hash password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        // 4️⃣ Create new partner
+        const newPartner = await foodpartnerModel.create({
+            name,
+            email,
+            password: hashedPassword,
+        });
+
+        // 5️⃣ Generate JWT token
+        const token = jwt.sign(
+            { id: newPartner._id },
+            process.env.JWT_SECRET,
+            { expiresIn: "1d" } // ✅ token expires in 7 days
+        );
+
+        // 6️⃣ Send token in secure HTTP-only cookie
+        res.cookie("token", token, {
+            httpOnly: true, // prevents XSS
+            sameSite: "strict", // prevents CSRF
+            maxAge: 1 * 24 * 60 * 60 * 1000, // 7 days
+        });
+
+        // 7️⃣ Send response
+        return res.status(201).json({
+            success: true,
+            message: "Food Partner registered successfully",
+            partner: {
+                id: newPartner._id,
+                name: newPartner.name,
+                email: newPartner.email,
+            },
+            token,
+        });
+    } catch (error) {
+        console.error("Registration Error:", error);
+        return res.status(500).json({ message: "Server error, please try again later" });
+    }
+}
+
+// Login food partner
+async function loginFoodPartner(req, res) {
+    try {
+        const { email, password } = req.body;
+
+        // 1️⃣ Validate input
+        if (!email || !password) {
+            return res.status(400).json({ message: "Email and password are required" });
+        }
+
+        // 2️⃣ Find partner by email
+        const partner = await foodpartnerModel.findOne({ email }).select("+password"); // Ensure password is included
+        if (!partner) {
+            return res.status(400).json({ message: "Invalid email or password" });
+        }
+
+        // Debugging: Check if password exists
+        console.log("Partner object:", partner); // Debugging
+        if (!partner.password) {
+            console.error("Partner password is undefined");
+            return res.status(500).json({ message: "Server error, please try again later" });
+        }
+
+        // 3️⃣ Compare password
+        const isPasswordValid = await bcrypt.compare(password, partner.password);
+        if (!isPasswordValid) {
+            return res.status(400).json({ message: "Invalid email or password" });
+        }
+
+        // 4️⃣ Check JWT secret
+        if (!process.env.JWT_SECRET) {
+            console.error("JWT_SECRET is not defined");
+            return res.status(500).json({ message: "Server configuration error" });
+        }
+
+        // 5️⃣ Generate JWT token
+        const token = jwt.sign(
+            { id: partner._id },
+            process.env.JWT_SECRET,
+            { expiresIn: "1d" }
+        );
+
+        // 6️⃣ Send token in HTTP-only cookie
+        res.cookie("token", token, {
+            httpOnly: true,
+            sameSite: "strict",
+            maxAge: 1 * 24 * 60 * 60 * 1000,
+        });
+
+        // 7️⃣ Send response
+        return res.status(200).json({
+            success: true,
+            message: "Login successful",
+            partner: {
+                _id: partner._id,
+                name: partner.name,
+                email: partner.email,
+            },
+        });
+    } catch (error) {
+        console.error("Login error:", error.message);
+        return res.status(500).json({ message: "Server error, please try again later" });
+    }
+}
+
+// Logout foodPartner 
+function logoutFoodPartner(req, res) {
+    try {
+        res.clearCookie("token", {
+            httpOnly: true,
+            sameSite: "strict",
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "Food Partner logout successful",
+        });
+    } catch (error) {
+        console.error("Logout Error:", error.message);
+        return res.status(500).json({ message: "Server error, please try again later" });
+    }
+}
+
+
+module.exports = {
+    registerUser,
+    loginUser,
+    logoutUser,
+    registeredFoodPartner,
+    loginFoodPartner,
+    logoutFoodPartner
+}
