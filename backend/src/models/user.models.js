@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
     fullname: {
         type: String,
-        required: [true, "Full name is required"],
         trim: true,
     },
     email: {

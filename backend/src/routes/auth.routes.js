@@ -8,6 +8,7 @@ router.post("/user/register", autController.registerUser)
 router.post("/user/login", autController.loginUser)
 router.get("/user/logout", autController.logoutUser)
 
+
 // foodPartner auth APIs
 router.post("/food-partner/register", autController.registeredFoodPartner)
 router.post("/food-partner/login", autController.loginFoodPartner)

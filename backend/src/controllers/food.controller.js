@@ -1,9 +1,13 @@
-const foodModel = require("../models/foodPartner.model")
+const foodModel = require("../models/addFood.model")
 const storageService = require("../services/storage.services")
-
+const multer = require("multer"); 
+const { nanoid } = require('nanoid');
+const uniqueId = nanoid();
 
 async function createFood(req, res) {
-    const { v4: uuid } = await import("uuid");
+
+    // console.log("DATA", req.body);
+    // console.log("File", req.file);
 
     if (!req.file) {
         return res
@@ -12,7 +16,7 @@ async function createFood(req, res) {
     }
 
     // Upload image to ImageKit
-    const fileUploadResult = await storageService.uploadFile(req.file.buffer, uuid());
+    const fileUploadResult = await storageService.uploadFile(req.file.buffer, uniqueId);
 
     // You can now save it to MongoDB
     const foodItems = await foodModel.create({

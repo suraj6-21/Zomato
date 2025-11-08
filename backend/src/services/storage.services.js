@@ -1,5 +1,4 @@
 require("dotenv").config();
-// const ImageKit = require("@imagekit/nodejs");
 const multer = require("multer");
 const ImageKit = require("imagekit")
 
@@ -13,16 +12,18 @@ const imagekit = new ImageKit({
 
 
 async function uploadFile(fileBuffer, fileName) {
+
   try {
     const result = await imagekit.upload({
       file: fileBuffer,
-      fileName: fileName,
+      fileName: fileName + ".mp4",
     });
     return result;
+
   } catch (error) {
     console.error("Upload failed:", error);
     throw error;
   }
 }
 
-module.exports = {uploadFile };
+module.exports = { uploadFile };

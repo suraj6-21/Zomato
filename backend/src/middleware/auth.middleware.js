@@ -1,20 +1,20 @@
-const foodpartnerModel = require("../models/foodPartner.model")
+const foodpartnerModel = require("../models/foodPartner.model.js")
 const jwt = require("jsonwebtoken")
 
 
 async function authFoodPartnerMiddleware(req, res, next) {
+
+    const token = req.cookies?.token;
+
+    // 🔒 Check if token exists
+    if (!token) {
+        return res.status(401).json({
+            success: false,
+            message: "Please login first",
+        });
+    }
+
     try {
-        // ✅ Correct way to access cookies in Express
-        const token = req.cookies?.token;
-
-        // 🔒 Check if token exists
-        if (!token) {
-            return res.status(401).json({
-                success: false,
-                message: "Please login first",
-            });
-        }
-
         // ✅ Verify token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
@@ -32,7 +32,7 @@ async function authFoodPartnerMiddleware(req, res, next) {
         req.foodPartner = foodPartner;
         next();
 
-    } catch (error) {
+    } catch (err) {
         return res.status(401).json({
             success: false,
             message: "Unauthorized or invalid token",

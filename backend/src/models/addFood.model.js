@@ -5,24 +5,34 @@ const addFoodItemsSchema = new mongoose.Schema(
     name: {
       type: String,
       required: [true, "Food name is required"],
-      trim: true,
     },
+
     video: {
       type: String,
-      required: [true, "Video URL is required"],
+      // required: [true, "Video URL is required"],
     },
+
     description: {
       type: String,
-      trim: true,
     },
+
     foodPartner: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "foodpartner", 
+      ref: "foodpartner",
       required: true,
     },
+
+    likeCount: {
+      type: Number,
+      default: 0
+    },
+
+    savesCount: {
+      type: Number,
+      default: 0
+    }
   },
-  { timestamps: true }
 );
 
-const addFoodItemsModel = mongoose.model("FoodItem", addFoodItemsSchema);
+const addFoodItemsModel = mongoose.model("foodItem", addFoodItemsSchema);
 module.exports = addFoodItemsModel;
