@@ -6,7 +6,7 @@
 node_modules/
 
 # Environment variables
-.env
+# .env
 
 # Logs
 logs/
@@ -32,6 +32,7 @@ coverage/
 # System files
 .DS_Store
 Thumbs.db
+.DS_Store
 
 # IDE & Editor settings
 .vscode/
