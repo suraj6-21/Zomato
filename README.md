@@ -138,3 +138,113 @@ You may add:
 
 ### License
 ISC (as per `backend/package.json`). Replace or update as needed.
+
+
+
+
+
+
+
+
+
+
+
+
+// Frontend
+
+# Authentication Pages - Setup Guide
+
+## Overview
+This package contains four authentication components with a minimal, seamless UI design featuring automatic light/dark mode support based on system preferences. The color scheme uses white and green combinations for an elegant, modern look.
+
+## File Structure
+```
+src/
+├── components/
+│   ├── UserLogin.jsx
+│   ├── UserRegister.jsx
+│   ├── FoodPartnerLogin.jsx
+│   └── FoodPartnerRegister.jsx
+├── theme.css
+├── App.jsx
+└── tailwind.config.js
+```
+
+## Setup Instructions
+
+### 1. Install Dependencies
+```bash
+npm install react react-dom
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+```
+
+### 2. Import CSS in your main entry file (index.js or main.jsx)
+```javascript
+import './theme.css';
+import './index.css'; // Tailwind directives
+```
+
+### 3. Add Tailwind directives to your index.css
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+## Components
+
+### UserLogin
+Simple login form for regular users with:
+- Email and password fields
+- Remember me checkbox
+- Forgot password link
+- Sign up redirect
+
+### UserRegister
+Registration form for new users with:
+- Full name, email, phone fields
+- Password and confirm password fields
+- Terms and conditions checkbox
+- Sign in redirect
+
+### FoodPartnerLogin
+Partner-specific login with:
+- Business email field
+- Password field
+- Partner icon indicator
+- Register business link
+
+### FoodPartnerRegister
+Comprehensive partner registration with:
+- Business information section (name, type, address, contact)
+- Owner information section (name, phone, password)
+- Multi-column layout for better organization
+- Business type dropdown
+- Partner-specific terms
+
+
+## Usage Example
+
+```javascript
+import UserLogin from './components/UserLogin';
+import UserRegister from './components/UserRegister';
+import FoodPartnerLogin from './components/FoodPartnerLogin';
+import FoodPartnerRegister from './components/FoodPartnerRegister';
+
+function App() {
+  return (
+    <div>
+      <UserLogin />
+      {/* Or use other components */}
+    </div>
+  );
+}
+```
+
+## Notes
+- No form logic included (as requested)
+- All styling uses Tailwind CSS with CSS variables
+- Components are independent and can be used separately
+- System preference detection is automatic
+- All forms are UI-only templates ready for logic implementation
