@@ -1,6 +1,5 @@
 const foodModel = require("../models/addFood.model")
 const storageService = require("../services/storage.services")
-const multer = require("multer"); 
 const { nanoid } = require('nanoid');
 const uniqueId = nanoid();
 
@@ -33,4 +32,17 @@ async function createFood(req, res) {
     });
 }
 
-module.exports = { createFood };
+async function getFoodItem(req, res) {
+    const foodItems = await foodModel.find({})
+
+    res.status(200).json({
+        message: " Food items fetched successfully",
+        foodItems
+    })
+
+}
+
+module.exports = {
+    createFood,
+    getFoodItem
+};
