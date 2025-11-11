@@ -15,4 +15,4 @@ router.post("/food-partner/login", autController.loginFoodPartner)
 router.get("/food-partner/logout", autController.logoutFoodPartner)
 
 
-module.exports = router
+module.exports = router  

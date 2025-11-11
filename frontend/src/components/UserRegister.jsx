@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../App.css';
 import "../Style/Theme.css";
 
@@ -11,6 +12,23 @@ const UserRegister = () => {
     setIsFoodPartner(!isFoodPartner);
     navigate(isFoodPartner ? '/user/register' : '/food-partner/register');
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const fullName = e.target.fullName.value;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    
+
+    await axios.post("http://localhost:3000/api/auth/user/register", {
+      fullName,
+      email,
+      password,
+    });
+
+
+  }
 
   return (
     <div className="auth-container">
@@ -32,12 +50,31 @@ const UserRegister = () => {
           </span>
         </div>
         <h2 className="auth-title">User Register</h2>
-        <form>
-          <input type="text" placeholder="Full Name" className="auth-input" />
-          <input type="email" placeholder="Email" className="auth-input" />
-          <input type="password" placeholder="Password" className="auth-input" />
-          <button type="button" className="auth-btn">Register</button>
-          <a href="/user/login" className="auth-link">Already have an account?</a>
+
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            name="fullName"
+            placeholder="Full Name"
+            className="auth-input"
+          />
+          <input
+            type="email"
+            name='email'
+            placeholder="Email"
+            className="auth-input"
+          />
+          <input
+            type="password"
+            name='password'
+            placeholder="Password"
+            className="auth-input"
+          />
+
+          <button
+            type="submit" className="auth-btn cursor-pointer">
+            Register
+          </button>
         </form>
       </div>
     </div>

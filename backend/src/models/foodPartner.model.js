@@ -5,7 +5,15 @@ const foodPartnerSchema = new mongoose.Schema(
     {
         name: {
             type: String,
-            required: [true, "Name is required"],
+            required: [true],
+        },
+        contactName: {
+            type: String,
+            required: true,
+        },
+        contactNumber: {
+            type: String,
+            required: [true, "Contact Number is required"],
         },
         email: {
             type: String,
@@ -19,6 +27,10 @@ const foodPartnerSchema = new mongoose.Schema(
             required: [true, "Password is required"],
             // minlength: [6, "Password must be at least 6 characters"],
             // select: false, // hides password in queries
+        },
+        address: {
+            type: String,
+            required: [true, "Address is required"],
         },
     },
     {

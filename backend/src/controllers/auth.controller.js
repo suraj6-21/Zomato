@@ -123,7 +123,7 @@ function logoutUser(req, res) {
 // Register new food partner
 async function registeredFoodPartner(req, res) {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password, phone, contactName, address } = req.body;
 
         // 1️⃣ Validate input
         if (!name || !email || !password) {
@@ -153,6 +153,9 @@ async function registeredFoodPartner(req, res) {
         const newfoodPartner = await foodpartnerModel.create({
             name,
             email,
+            contactNumber: phone,
+            address,
+            contactName,
             password: hashedPassword,
         });
 
@@ -173,6 +176,9 @@ async function registeredFoodPartner(req, res) {
                 _id: newfoodPartner._id,
                 name: newfoodPartner.name,
                 email: newfoodPartner.email,
+                phone: newfoodPartner.contactNumber,
+                address: newfoodPartner.address,
+                contactName: newfoodPartner.contactName,
             },
         });
 
