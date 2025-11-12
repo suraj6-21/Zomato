@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../App.css';
-import "../Style/Theme.css";
+
 
 const UserLogin = () => {
   const [isFoodPartner, setIsFoodPartner] = useState(false);

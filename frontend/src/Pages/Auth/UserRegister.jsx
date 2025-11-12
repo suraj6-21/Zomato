@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import '../App.css';
-import "../Style/Theme.css";
+
 
 const UserRegister = () => {
   const [isFoodPartner, setIsFoodPartner] = useState(false);
