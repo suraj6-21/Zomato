@@ -15,18 +15,27 @@ const UserRegister = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const fullName = e.target.fullName.value;
+    // 1. FIX: Extract fullname from the form input
+    const fullname = e.target.fullname.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
-    
 
-    await axios.post("http://localhost:3000/api/auth/user/register", {
-      fullName,
+    // 2. Send all three to the backend
+    const userData = {
+      fullname,  
       email,
-      password,
+      password
+    };
+
+
+    const response = await axios.post("http://localhost:3000/api/auth/user/register", userData, {
+      withCredentials: true
     });
 
-
+    console.log(response.data);
+    // Handle success (e.g., navigate to login page)
+    alert(response.data.user.fullname + " registered successfully!");
+    navigate('/');
   }
 
   return (
