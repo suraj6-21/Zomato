@@ -22,7 +22,7 @@ async function registerUser(req, res) {
     const hashPassword = await bcrypt.hash(password, 10)
 
     const user = await userModel.create({
-        fullname,
+        fullname: fullname,
         email,
         password: hashPassword
     })
@@ -31,7 +31,7 @@ async function registerUser(req, res) {
         id: user._id
     }, process.env.JWT_SECRET)
 
-    res.cookie("token", token, {
+    res.cookie("User_token", token, {
         maxAge: 1 * 24 * 60 * 60 * 1000 
     })
 
