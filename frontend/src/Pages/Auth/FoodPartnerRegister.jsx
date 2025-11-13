@@ -16,21 +16,21 @@ const FoodPartnerRegister = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const name = e.target.name.value;
+    const businessName = e.target.name.value;
     const contactName = e.target.contactName.value;
-    const contactNumber = e.target.contactNumber.value;
+    const contactPhone = e.target.contactNumber.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
     const address = e.target.address.value;
 
     try {
       const response = await axios.post(
-        // ✅ Use full backend URL
+        // ✅ Backend URL — adjust if your port or route differs
         'http://localhost:3000/api/auth/food-partner/register',
         {
-          name,
+          name : businessName,
           contactName,
-          contactNumber,
+          contactPhone,
           email,
           password,
           address,
@@ -39,15 +39,19 @@ const FoodPartnerRegister = () => {
       );
 
       console.log('✅ Registration response:', response.data);
-      alert('Registration successful!');
-      navigate('/');
-      
+      alert(response.data.message || 'Registration successful!');
+      navigate('/create-food');
+
     } catch (error) {
       console.error('❌ Registration error:', error);
-      if (error.response && error.response.status === 404) {
-        alert('Server route not found (404). Check your backend endpoint.');
+
+      if (error.response) {
+        console.error('Server response:', error.response.data);
+        alert(error.response.data.message || 'Registration failed. Please try again.');
+      } else if (error.request) {
+        alert('No response from server. Please check your backend connection.');
       } else {
-        alert('Registration failed. Please try again.');
+        alert('Error: ' + error.message);
       }
     }
   };
@@ -55,7 +59,7 @@ const FoodPartnerRegister = () => {
   return (
     <div className="auth-container">
       <div className="auth-card">
-        {/* Toggle */}
+        {/* Toggle Switch */}
         <div className="modern-toggle-container">
           <span className={`toggle-label ${isFoodPartner ? 'active' : ''}`}>
             Food Partner
@@ -111,7 +115,7 @@ const FoodPartnerRegister = () => {
             className="auth-input"
             name="password"
             required
-            minLength={6}
+            // minLength={6}
           />
           <input
             type="text"
