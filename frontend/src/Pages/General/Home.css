@@ -1,81 +1,81 @@
-/* Main Container - Handles the snapping */
+/* Scroll Snap (TikTok / Instagram Reels style) */
 .feed-container {
-    height: 100vh; /* Full viewport height */
-    width: 100%;
-    overflow-y: scroll; /* Allow vertical scrolling */
-    scroll-snap-type: y mandatory; /* Forces the snap effect on the Y axis */
-    scroll-behavior: smooth;
-    background-color: black;
-  }
-  
-  /* Individual Video Container */
-  .reel-container {
-    height: 100vh; /* Must be full height */
-    width: 100%;
-    position: relative;
-    scroll-snap-align: start; /* The point where the scroll snaps to (top of div) */
-    overflow: hidden;
-  }
-  
-  /* The Video Element */
-  .reel-video {
-    height: 100%;
-    width: 100%;
-    object-fit: cover; /* Ensures video covers screen without stretching */
-    display: block;
-  }
-  
-  /* Overlay Wrapper - Placed on top of video */
-  .reel-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    /* Gradient at bottom to make white text readable against light videos */
-    background: linear-gradient(to top, rgba(0,0,0,0.6) 10%, transparent 50%);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end; /* Pushes content to bottom */
-    padding-bottom: 80px; /* Space from bottom (adjust for nav bars) */
-    pointer-events: none; /* Allows clicks to pass through to video controls if needed */
-  }
-  
-  /* Content Container */
-  .reel-content {
-    padding: 0 20px; /* Side padding */
-    color: white;
-    pointer-events: auto; /* Re-enable clicks for the button */
-  }
-  
-  /* Description Text - Truncated to 2 lines */
-  .description {
-    font-size: 1rem;
-    margin-bottom: 12px;
-    
-    /* CSS to limit to 2 lines */
-    display: -webkit-box;
-    -webkit-line-clamp: 2; 
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.4;
-  }
-  
-  /* Visit Store Button */
-  .store-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #ff3b5c; /* TikTok-ish Red/Pink */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-weight: bold;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  
-  .store-button:active {
-    transform: scale(0.98);
-  }
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+}
+
+.feed-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Each Video Section */
+.reel-container {
+  width: 100vw;
+  height: 100dvh; /* dynamic viewport height for mobile */
+  position: relative;
+  scroll-snap-align: start;
+  overflow: hidden;
+}
+
+/* Fullscreen Video */
+.reel-video {
+  width: 100vw;
+  height: 100dvh;
+  object-fit: cover;
+  object-position: center;
+  background: black;
+}
+
+/* Overlay UI */
+.reel-overlay {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  width: 100%;
+  padding: 0 20px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
+/* Description (2 lines max) */
+.description {
+  color: white;
+  font-size: 15px;
+  margin-bottom: 10px;
+  display: -webkit-box;
+  overflow: hidden;
+}
+
+/* Button */
+.store-button {
+  background: #22c55e;
+  padding: 10px 18px;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+.store-button:active {
+  transform: scale(0.95);
+}
+.reel-container {
+  width: 100vw;
+  height: 100dvh;
+  position: relative;
+  scroll-snap-align: start;
+  background: black; /* fills empty space if aspect ratio differs */
+  overflow: hidden;
+}
+
+.reel-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* show full video without cropping */
+  object-position: center;
+  background: black;
+}
