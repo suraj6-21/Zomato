@@ -7,7 +7,7 @@ const addFoodItemsSchema = new mongoose.Schema(
       required: [true, "Food name is required"],
     },
 
-    video: {
+    videoUrl: {
       type: String,
       // required: [true, "Video URL is required"],
     },

@@ -26,7 +26,7 @@ const foodPartnerSchema = new mongoose.Schema(
             type: String,
             required: [true, "Password is required"],
             // minlength: [6, "Password must be at least 6 characters"],
-            // select: false, // hides password in queries
+            select: false, // hides password in queries
         },
         address: {
             type: String,

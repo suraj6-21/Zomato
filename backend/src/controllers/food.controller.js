@@ -28,7 +28,6 @@ async function createFood(req, res) {
     res.status(201).json({
         message: "Food item created successfully",
         food: foodItems,
-        videoUrl: fileUploadResult.url,
     });
 }
 
